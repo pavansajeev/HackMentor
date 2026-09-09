@@ -78,6 +78,11 @@ export default function HackPilotLandingPage() {
     }
   };
 
+  const handleStageNext = (nextStageKey) => {
+    setActiveStage(nextStageKey);
+    scrollToSection('menu-sec', 'menu');
+  };
+
   const stages = [
     { id: 'problem', label: '1. Problem & Idea', icon: Lightbulb, color: '#F5D62E' },
     { id: 'blueprint', label: '2. Tech Blueprint', icon: Cpu, color: '#06b6d4' },
@@ -587,22 +592,22 @@ export default function HackPilotLandingPage() {
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)'
           }}>
             {activeStage === 'problem' && (
-              <ProblemSelection projectState={projectState} setProjectState={setProjectState} onNext={() => setActiveStage('blueprint')} />
+              <ProblemSelection projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('blueprint')} />
             )}
             {activeStage === 'blueprint' && (
-              <ArchitectureBlueprint projectState={projectState} setProjectState={setProjectState} onNext={() => setActiveStage('mvp')} />
+              <ArchitectureBlueprint projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('mvp')} />
             )}
             {activeStage === 'mvp' && (
-              <MvpKanban projectState={projectState} setProjectState={setProjectState} onNext={() => setActiveStage('pitch')} />
+              <MvpKanban projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('pitch')} />
             )}
             {activeStage === 'pitch' && (
-              <PitchBuilder projectState={projectState} setProjectState={setProjectState} onNext={() => setActiveStage('judge')} />
+              <PitchBuilder projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('judge')} />
             )}
             {activeStage === 'judge' && (
-              <JudgeSimulator projectState={projectState} setProjectState={setProjectState} onNext={() => setActiveStage('scorecard')} />
+              <JudgeSimulator projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('scorecard')} />
             )}
             {activeStage === 'scorecard' && (
-              <ReadinessScorecard projectState={projectState} setProjectState={setProjectState} onSelectTab={setActiveStage} />
+              <ReadinessScorecard projectState={projectState} setProjectState={setProjectState} onSelectTab={(tab) => handleStageNext(tab)} />
             )}
           </div>
         </div>

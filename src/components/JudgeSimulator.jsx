@@ -286,13 +286,22 @@ export default function JudgeSimulator({ projectState, setProjectState, onNext }
                 <p style={{ fontSize: '0.88rem', color: '#cbd5e1', marginTop: '4px' }}>{evaluationResult.gaps}</p>
               </div>
             </div>
+
+            <button
+              onClick={onNext}
+              className="btn btn-emerald glow-emerald"
+              style={{ width: '100%', padding: '14px', fontSize: '1rem', marginTop: '8px' }}
+            >
+              Proceed to Stage 6: Readiness Scorecard
+              <ArrowRight size={18} />
+            </button>
           </div>
         )}
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '10px' }}>
           <button
             onClick={onNext}
-            className="btn btn-emerald"
+            className="btn btn-emerald glow-emerald"
             style={{ padding: '14px 28px', fontSize: '1rem' }}
           >
             Complete Practice & View Final Scorecard
