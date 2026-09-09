@@ -58,8 +58,24 @@ export default function HackPilotLandingPage() {
   const [activeNav, setActiveNav] = useState('home');
   const [activeStage, setActiveStage] = useState('problem');
   const [projectState, setProjectState] = useState(() => {
-    const saved = localStorage.getItem('hackpilot_project');
-    return saved ? JSON.parse(saved) : DEFAULT_PROJECT;
+    try {
+      const saved = localStorage.getItem('hackpilot_project');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...DEFAULT_PROJECT,
+          ...parsed,
+          techStack: parsed.techStack || DEFAULT_PROJECT.techStack,
+          architectureNodes: parsed.architectureNodes || DEFAULT_PROJECT.architectureNodes,
+          kanbanTasks: parsed.kanbanTasks || DEFAULT_PROJECT.kanbanTasks,
+          slides: parsed.slides || DEFAULT_PROJECT.slides,
+          judgeScores: parsed.judgeScores || DEFAULT_PROJECT.judgeScores
+        };
+      }
+    } catch (err) {
+      console.warn("Failed parsing saved project:", err);
+    }
+    return DEFAULT_PROJECT;
   });
   const [isMentorOpen, setIsMentorOpen] = useState(false);
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);

@@ -5,75 +5,94 @@ import confetti from 'canvas-confetti';
 export default function ReadinessScorecard({ projectState, setProjectState, onSelectTab }) {
 
   const triggerConfetti = () => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
+    try {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    } catch (err) {
+      console.warn("Confetti error:", err);
+    }
   };
 
   React.useEffect(() => {
     triggerConfetti();
   }, []);
 
+  const safeState = projectState || {};
+  const title = safeState.title || "My Hackathon Project";
+  const hackathonName = safeState.hackathonName || "Global Hackathon 2026";
+  const track = safeState.track || "Generative AI";
+  const problemStatement = safeState.problemStatement || "Manual overhead and complexity.";
+  const solution = safeState.solution || "AI automated copilot.";
+  const novelty = safeState.novelty || "Low latency contextual pipeline.";
+  const elevatorScript = safeState.elevatorScript || "";
+
+  const kanbanTasks = safeState.kanbanTasks || [];
+  const techStack = safeState.techStack || [];
+  const slides = safeState.slides || [];
+  const architectureNodes = safeState.architectureNodes || [];
+  const qnaFeedback = safeState.judgeScores?.qnaFeedback || [];
+
   // Calculate readiness metrics
-  const doneTasks = projectState.kanbanTasks.filter(t => t.status === 'done').length;
-  const totalTasks = projectState.kanbanTasks.length || 1;
+  const doneTasks = kanbanTasks.filter(t => t.status === 'done').length;
+  const totalTasks = kanbanTasks.length || 1;
   const kanbanScore = Math.min(100, Math.round((doneTasks / totalTasks) * 100));
 
   const ideaScore = 94;
-  const techScore = projectState.techStack.length >= 3 ? 92 : 75;
-  const pitchScore = projectState.slides.length >= 5 ? 95 : 70;
-  const qnaScore = (projectState.judgeScores?.qnaFeedback?.length || 0) > 0 ? 94 : 70;
+  const techScore = techStack.length >= 3 ? 92 : 75;
+  const pitchScore = slides.length >= 5 ? 95 : 70;
+  const qnaScore = qnaFeedback.length > 0 ? 94 : 70;
 
   const overallReadiness = Math.round((ideaScore * 0.2) + (techScore * 0.2) + (kanbanScore * 0.25) + (pitchScore * 0.2) + (qnaScore * 0.15));
 
   const handleExportPackage = () => {
-    const markdownContent = `# 🚀 ${projectState.title} - Hackathon Package
-**Hackathon:** ${projectState.hackathonName}
-**Track:** ${projectState.track}
+    const markdownContent = `# 🚀 ${title} - Hackathon Package
+**Hackathon:** ${hackathonName}
+**Track:** ${track}
 **Overall Readiness Score:** ${overallReadiness}%
 
 ---
 
 ## 1. Problem Statement & Novelty
-- **Problem:** ${projectState.problemStatement}
-- **Solution:** ${projectState.solution}
-- **USP / Secret Sauce:** ${projectState.novelty}
+- **Problem:** ${problemStatement}
+- **Solution:** ${solution}
+- **USP / Secret Sauce:** ${novelty}
 
 ---
 
 ## 2. Tech Architecture & Stack
-- **Tech Stack:** ${projectState.techStack.join(', ')}
+- **Tech Stack:** ${techStack.join(', ')}
 - **Architecture Nodes:**
-${projectState.architectureNodes.map(n => `  - [${n.category}] ${n.name}`).join('\n')}
+${architectureNodes.map(n => `  - [${n.category}] ${n.name}`).join('\n')}
 
 ---
 
 ## 3. MVP Completed Demo Features
-${projectState.kanbanTasks.map(t => `- [${t.status === 'done' ? 'x' : ' '}] ${t.title} (${t.priority} priority)`).join('\n')}
+${kanbanTasks.map(t => `- [${t.status === 'done' ? 'x' : ' '}] ${t.title} (${t.priority} priority)`).join('\n')}
 
 ---
 
 ## 4. 7-Slide Pitch Deck Outline
-${projectState.slides.map(s => `### Slide ${s.id}: ${s.title}\n${s.content}\n`).join('\n')}
+${slides.map(s => `### Slide ${s.id}: ${s.title}\n${s.content}\n`).join('\n')}
 
 ---
 
 ## 5. 90-Second Elevator Pitch Script
-${projectState.elevatorScript}
+${elevatorScript}
 
 ---
 
 ## 6. Judge Q&A Cheat Sheet
-${(projectState.judgeScores?.qnaFeedback || []).map((q, idx) => `**Q${idx+1}:** ${q.question}\n**Answer:** ${q.answer}\n**Score:** ${q.score}/100\n`).join('\n')}
+${qnaFeedback.map((q, idx) => `**Q${idx+1}:** ${q.question}\n**Answer:** ${q.answer}\n**Score:** ${q.score}/100\n`).join('\n')}
 `;
 
     const blob = new Blob([markdownContent], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${projectState.title.replace(/[^a-z0-9]/gi, '_')}_Hackathon_Package.md`;
+    a.download = `${title.replace(/[^a-z0-9]/gi, '_')}_Hackathon_Package.md`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
