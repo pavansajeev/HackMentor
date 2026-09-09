@@ -11,8 +11,8 @@ import ArchitectureBlueprint from './ArchitectureBlueprint';
 import MvpKanban from './MvpKanban';
 import PitchBuilder from './PitchBuilder';
 import JudgeSimulator from './JudgeSimulator';
-import ReadinessScorecard from './ReadinessScorecard';
 import QuickSetupModal from './QuickSetupModal';
+import heroImg from '../assets/hero.png';
 
 const DEFAULT_PROJECT = {
   title: "GreenPulse - AI Supply Chain Decarbonizer",
@@ -243,7 +243,7 @@ export default function HackPilotLandingPage() {
         <div style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1800&q=80')`,
+          backgroundImage: `url(${heroImg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: 'brightness(0.32) saturate(1.2)',
