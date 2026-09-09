@@ -11,7 +11,9 @@ import ArchitectureBlueprint from './ArchitectureBlueprint';
 import MvpKanban from './MvpKanban';
 import PitchBuilder from './PitchBuilder';
 import JudgeSimulator from './JudgeSimulator';
+import ReadinessScorecard from './ReadinessScorecard';
 import QuickSetupModal from './QuickSetupModal';
+import ErrorBoundary from './ErrorBoundary';
 import heroImg from '../assets/hero.png';
 
 const DEFAULT_PROJECT = {
@@ -599,33 +601,35 @@ export default function HackPilotLandingPage() {
           </div>
 
           {/* Active Stage View Container */}
-          <div style={{
-            background: '#0b0f1d',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '24px',
-            padding: '36px',
-            textAlign: 'left',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)'
-          }}>
-            {activeStage === 'problem' && (
-              <ProblemSelection projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('blueprint')} />
-            )}
-            {activeStage === 'blueprint' && (
-              <ArchitectureBlueprint projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('mvp')} />
-            )}
-            {activeStage === 'mvp' && (
-              <MvpKanban projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('pitch')} />
-            )}
-            {activeStage === 'pitch' && (
-              <PitchBuilder projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('judge')} />
-            )}
-            {activeStage === 'judge' && (
-              <JudgeSimulator projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('scorecard')} />
-            )}
-            {activeStage === 'scorecard' && (
-              <ReadinessScorecard projectState={projectState} setProjectState={setProjectState} onSelectTab={(tab) => handleStageNext(tab)} />
-            )}
-          </div>
+          <ErrorBoundary key={activeStage}>
+            <div style={{
+              background: '#0b0f1d',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '24px',
+              padding: '36px',
+              textAlign: 'left',
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6)'
+            }}>
+              {activeStage === 'problem' && (
+                <ProblemSelection projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('blueprint')} />
+              )}
+              {activeStage === 'blueprint' && (
+                <ArchitectureBlueprint projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('mvp')} />
+              )}
+              {activeStage === 'mvp' && (
+                <MvpKanban projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('pitch')} />
+              )}
+              {activeStage === 'pitch' && (
+                <PitchBuilder projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('judge')} />
+              )}
+              {activeStage === 'judge' && (
+                <JudgeSimulator projectState={projectState} setProjectState={setProjectState} onNext={() => handleStageNext('scorecard')} />
+              )}
+              {activeStage === 'scorecard' && (
+                <ReadinessScorecard projectState={projectState} setProjectState={setProjectState} onSelectTab={(tab) => handleStageNext(tab)} />
+              )}
+            </div>
+          </ErrorBoundary>
         </div>
       </section>
 

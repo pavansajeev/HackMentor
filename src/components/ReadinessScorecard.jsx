@@ -29,11 +29,11 @@ export default function ReadinessScorecard({ projectState, setProjectState, onSe
   const novelty = safeState.novelty || "Low latency contextual pipeline.";
   const elevatorScript = safeState.elevatorScript || "";
 
-  const kanbanTasks = safeState.kanbanTasks || [];
-  const techStack = safeState.techStack || [];
-  const slides = safeState.slides || [];
-  const architectureNodes = safeState.architectureNodes || [];
-  const qnaFeedback = safeState.judgeScores?.qnaFeedback || [];
+  const kanbanTasks = Array.isArray(safeState.kanbanTasks) ? safeState.kanbanTasks : [];
+  const techStack = Array.isArray(safeState.techStack) ? safeState.techStack : [];
+  const slides = Array.isArray(safeState.slides) ? safeState.slides : [];
+  const architectureNodes = Array.isArray(safeState.architectureNodes) ? safeState.architectureNodes : [];
+  const qnaFeedback = Array.isArray(safeState.judgeScores?.qnaFeedback) ? safeState.judgeScores.qnaFeedback : [];
 
   // Calculate readiness metrics
   const doneTasks = kanbanTasks.filter(t => t.status === 'done').length;
